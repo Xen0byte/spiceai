@@ -1,0 +1,27 @@
+[package]
+description = "Spice cache"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+name = "cache"
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+arrow.workspace = true
+async-stream.workspace = true
+async-trait.workspace = true
+byte-unit = "5.1.4"
+datafusion.workspace = true
+fundu = { workspace = true }
+futures.workspace = true
+moka = { version = "0.12", features = ["future"] }
+opentelemetry.workspace = true
+snafu.workspace = true
+spicepod = { path = "../spicepod" }
+tokio.workspace = true
+tracing.workspace = true
+
+[features]
+default = []

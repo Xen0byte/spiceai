@@ -30,8 +30,8 @@ getSystemInfo() {
     ARCH=$(uname -m)
     case $ARCH in
         armv7*) ARCH="arm";;
-        aarch64) ARCH="arm64";;
-        x86_64) ARCH="amd64";;
+        arm64) ARCH="aarch64";;
+        amd64) ARCH="x86_64";;
     esac
 
     OS=$(echo `uname`|tr '[:upper:]' '[:lower:]')
@@ -43,7 +43,7 @@ getSystemInfo() {
 }
 
 verifySupported() {
-    local supported=(darwin-amd64 linux-amd64)
+    local supported=(linux-x86_64 linux-aarch64 darwin-aarch64)
     local current_osarch="${OS}-${ARCH}"
 
     for osarch in "${supported[@]}"; do
@@ -51,12 +51,6 @@ verifySupported() {
             return
         fi
     done
-
-    if [ "$current_osarch" == "darwin-arm64" ]; then
-        echo "darwin_arm64 arch is not yet supported. See the Spice.ai roadmap at https://github.com/spiceai/spiceai/blob/trunk/docs/ROADMAP.md."
-        return
-    fi
-
 
     echo "No prebuilt binary for ${current_osarch}"
     exit 1
@@ -82,7 +76,7 @@ checkHttpRequestCLI() {
         echo
         echo "To install curl (OSX): 'brew install curl'"
         echo "To install curl (Ubuntu): 'apt install curl'"
-        echo 
+        echo
         exit 1
     fi
 }
@@ -98,14 +92,36 @@ checkJqInstalled() {
     fi
 }
 
+function gh_curl() {
+    if [ -z "$GITHUB_TOKEN" ]
+    then
+        curl \
+            $@
+    else
+        curl -H "Authorization: token $GITHUB_TOKEN" \
+            $@
+    fi
+}
+
+function gh_wget() {
+    if [ -z "$GITHUB_TOKEN" ]
+    then
+        wget \
+            $@
+    else
+        wget --header="Authorization: token $GITHUB_TOKEN" \
+            $@
+    fi
+}
+
 getLatestRelease() {
-    local spiceReleaseUrl="https://api.github.com/repos/${GITHUB_ORG}/${GITHUB_REPO}/releases"
+    local spiceReleaseUrl="https://api.github.com/repos/${GITHUB_ORG}/${GITHUB_REPO}/releases/latest"
     local latest_release=""
 
     if [ "$SPICE_HTTP_REQUEST_CLI" == "curl" ]; then
-        latest_release=$(curl -s $spiceReleaseUrl | grep \"tag_name\" | grep -v rc | awk 'NR==1{print $2}' |  sed -n 's/\"\(.*\)\",/\1/p')
+        latest_release=$(gh_curl -s $spiceReleaseUrl | grep \"tag_name\" | awk 'NR==1{print $2}' |  sed -n 's/\"\(.*\)\",/\1/p')
     else
-        latest_release=$(wget -q --header="Accept: application/json" -O - $spiceReleaseUrl | grep \"tag_name\" | grep -v rc | awk 'NR==1{print $2}' |  sed -n 's/\"\(.*\)\",/\1/p')
+        latest_release=$(gh_wget -q --header="Accept: application/json" -O - $spiceReleaseUrl | grep \"tag_name\" | awk 'NR==1{print $2}' |  sed -n 's/\"\(.*\)\",/\1/p')
     fi
 
     ret_val=$latest_release
@@ -124,25 +140,25 @@ downloadFile() {
 
     echo "Downloading $DOWNLOAD_URL ..."
 
-    function gh_curl() {
-      curl -H "Accept: application/vnd.github.v3.raw" \
+    function gh_curl_vnd() {
+        gh_curl -H "Accept: application/vnd.github.v3.raw" \
           $@
     }
 
     parser=". | map(select(.tag_name == \"$LATEST_RELEASE_TAG\"))[0].assets | map(select(.name == \"$SPICE_CLI_ARTIFACT\"))[0].id"
 
-    asset_id=`gh_curl -s https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases | jq "$parser"`
+    asset_id=`gh_curl_vnd -s https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases | jq "$parser"`
     if [ "$asset_id" = "null" ]; then
       echo "ERROR: version not found $VERSION"
       exit 1
     fi;
 
     if [ "$SPICE_HTTP_REQUEST_CLI" == "curl" ]; then
-        curl -H "Accept:application/octet-stream" -SsL \
+        gh_curl -H "Accept:application/octet-stream" -SsL \
             https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/assets/$asset_id \
             -o "$ARTIFACT_TMP_FILE"
     else
-        wget -q --auth-no-challenge --header='Accept:application/octet-stream' \
+        gh_wget -q --auth-no-challenge --header='Accept:application/octet-stream' \
             https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/assets/$asset_id \
             -O "$ARTIFACT_TMP_FILE"
     fi
@@ -167,7 +183,7 @@ installFile() {
 
     if [ -f "$SPICE_CLI_FILE" ]; then
         echo "$SPICE_CLI_FILENAME installed into $SPICE_CLI_INSTALL_DIR successfully."
-    else 
+    else
         echo "Failed to install $SPICE_CLI_FILENAME"
         exit 1
     fi
@@ -177,7 +193,7 @@ fail_trap() {
     result=$?
     if [ "$result" != "0" ]; then
         echo "Failed to install Spice CLI"
-        echo "For support, see https://docs.spiceai.org"
+        echo "For support, see https://spiceai.org/docs"
     fi
     cleanup
     exit $result
@@ -198,7 +214,7 @@ checkShell() {
     if [[ "$OS" == "linux" ]]; then
       MODIFIED_TIME=`date +%s -r "$SHELL"`
     elif [[ "$OS" == "darwin" ]]; then
-      MODIFIED_TIME=`stat -f%c "$SHELL"`
+      MODIFIED_TIME=`/usr/bin/stat -f%c "$SHELL"`
     fi
 
     if (( $MODIFIED_TIME > $MOST_RECENT_MODIFIED )); then
@@ -217,7 +233,7 @@ addToProfile() {
 }
 
 installCompleted() {
-    echo -e "\nTo get started with Spice.ai, visit https://docs.spiceai.org"
+    echo -e "\nTo get started with Spice.ai, visit https://spiceai.org/docs"
 }
 
 # -----------------------------------------------------------------------------
@@ -245,7 +261,7 @@ downloadFile $ret_val
 installFile
 cleanup
 
-SHELLS_TO_CHECK=(".bashrc" ".bash_profile" ".zshrc" ".config/fish/config.fish")
+SHELLS_TO_CHECK=(".bashrc" ".bash_profile" ".zshrc" ".zprofile" ".config/fish/config.fish")
 
 for i in "${SHELLS_TO_CHECK[@]}"; do checkShell $i; done
 

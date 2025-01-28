@@ -1,44 +1,62 @@
-# Spice.ai Roadmap
+# Spice.ai OSS Roadmap
 
-This describes the current Spice.ai roadmap.
+Describes the Spice roadmap, updated based on community and customer feedback.
 
-This is a living doc that will be updated based on community and customer feedback.
+If you have a feature request or suggestion, please [get in touch](https://github.com/spiceai/spiceai#-connect-with-us)!
 
-If you have a feature request or suggestion, please [get in touch](https://github.com/spiceai/spiceai#community)!
+## Known bugs
 
-## Current Limitations
+- See [Bugs](https://github.com/spiceai/spiceai/labels/bug). Feel free to [file a new Issue](https://github.com/spiceai/spiceai/issues/new?template=bug_report.md) if you see a bug and let us know on Discord.
 
-Spice.ai is still under early development, so there are several gaps and limitations, including:
+## v1.1 (Feb 2025)
 
-- Reward code must be written in Python 3. The plan is to enable these to be written in any language that compiles to Web Assembly.
-- Running in Docker is required - a pure metal experience will be supported before v1.0 (possible now, but unsupported).
-- Native support for macOS and Linux only. [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) is required for Windows.
-- darwin/arm64 is not yet supported (i.e. Apple's M1 Macs). We use M1s ourselves, so we hope to support this very soon 👨‍💻👩‍💻
+- Enterprise Search and Retrieval improvements
+  - [#3006](https://github.com/spiceai/spiceai/issues/3006) Search with keyword filtering
+  - [#3016](https://github.com/spiceai/spiceai/issues/3016) Hybrid-Search (DB + Vector)
+  - [#3015](https://github.com/spiceai/spiceai/issues/3015) DataFusion Search
+- [#3318](https://github.com/spiceai/spiceai/issues/3318) FinanceBench in CI
+- Model Providers: OpenAI, HuggingFace, File (Stable)
+- Model Providers: Anthropic, Azure OpenAI, Grok (Beta), DeepSeek (Alpha)
+- Data Accelerators: PostgreSQL (Stable)
 
-### Known bugs
+## v1.2 (Mar 2025)
 
-- See [Bugs](https://github.com/spiceai/spiceai/labels/bug). Feel free to file a new Issue if you see a bug and let us know on Discord.
+- AWS Glue Catalog Connector (Alpha)
+- [#3018](https://github.com/spiceai/spiceai/issues/3018) Results caching for embeddings and search
 
-## Tentative v0.7-alpha roadmap
+## v1.3 (Q1 2025)
 
-- Darwin/ARM64 support
-- AI engine migration from pandas to pyarrow
-- Goals - E.g. maximize "a" or minimize "b"
+- Ingestion
+  - PostgreSQL write
+  - Delta Lake write
+  - Iceberg write
 
-## Features being considered for v1.0-stable
+## v2 (H2 2025)
 
-- WebSocket support for dashboard data
-- CI/CD on GitHub
-- Self-host on baremetal or VM
-- Pluggable environments
-- Search, index, publish and browse the Spice Rack registry
-- Distributed learning
-- Improved data visualization in dashboard
-- Custom visualization hooks for Dataspaces
-- Parallel Actions (AI Engine)
-- A/B testing and flighting
-- Continuous Actions
+- Policy
+  - Security
+  - Data Access
+- Extensible Middleware
+- AuthN Providers
 
-## Beyond v1.0
+## Features being considered
 
-Based on community feedback!
+- Data Connectors
+
+  - S3 Tables
+  - ElasticSearch
+  - MotherDuck
+  - BigQuery
+  - Kafka
+  - Google Docs
+
+- APIs
+
+  - GraphQL API
+  - Key/Value API
+    - SlateDB data accelerator
+    - RocksDB data accelerator
+  - PostgreSQL API
+
+- AI
+  - Vision

@@ -1,0 +1,23 @@
+---
+source: crates/runtime/tests/models/mod.rs
+expression: normalize_search_response(response)
+---
+{
+  "duration_ms": "duration_ms_val",
+  "matches": [
+    {
+      "dataset": "spice.public.item",
+      "primary_key": {
+        "i_item_sk": 19
+      },
+      "value": "Patient"
+    },
+    {
+      "dataset": "spice.public.item",
+      "primary_key": {
+        "i_item_sk": 7
+      },
+      "value": "New"
+    }
+  ]
+}

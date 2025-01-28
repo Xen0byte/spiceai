@@ -1,0 +1,85 @@
+[package]
+description = "Spice OSS"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+name = "spiced"
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+app = { path = "../../crates/app" }
+clap = { workspace = true, features = ["derive"] }
+flightrepl = { path = "../../crates/flightrepl" }
+futures.workspace = true
+opentelemetry.workspace = true
+opentelemetry_sdk.workspace = true
+opentelemetry-prometheus.workspace = true
+opentelemetry-zipkin.workspace = true
+opentelemetry-http.workspace = true
+otel-arrow = { path = "../../crates/otel-arrow" }
+prometheus.workspace = true
+reqwest.workspace = true
+runtime = { path = "../../crates/runtime" }
+runtime-auth = { path = "../../crates/runtime-auth" }
+rustls.workspace = true
+rustls-pemfile.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+snafu.workspace = true
+snmalloc-rs = "0.3.6"
+spice-cloud = { path = "../../crates/spice_cloud" }
+tokio.workspace = true
+telemetry = { path = "../../crates/telemetry" }
+tracing.workspace = true
+tracing-subscriber.workspace = true
+tracing-opentelemetry.workspace = true
+
+# Non-default features should be added to `lint-rust` make target.
+[features]
+anonymous_telemetry = ["telemetry/anonymous_telemetry"]
+aws-secrets-manager = ["runtime/aws-secrets-manager"]
+clickhouse = ["runtime/clickhouse"]
+cuda =  ["runtime/cuda"]
+databricks = ["runtime/databricks"]
+debezium = ["runtime/debezium"]
+default = [
+  "duckdb",
+  "postgres",
+  "sqlite",
+  "mysql",
+  "flightsql",
+  "delta_lake",
+  "databricks",
+  "dremio",
+  "clickhouse",
+  "sharepoint",
+  "snowflake",
+  "spark",
+  "ftp",
+  "debezium",
+  "anonymous_telemetry",
+  "mssql",
+  "dynamodb",
+]
+delta_lake = ["runtime/delta_lake"]
+dev = ["runtime/dev"]
+dremio = ["runtime/dremio"]
+duckdb = ["runtime/duckdb"]
+dynamodb = ["runtime/dynamodb"]
+flightsql = ["runtime/flightsql"]
+ftp = ["runtime/ftp"]
+keyring-secret-store = ["runtime/keyring-secret-store"]
+metal =  ["runtime/metal"]
+models = ["runtime/models"]
+mssql = ["runtime/mssql"]
+mysql = ["runtime/mysql"]
+odbc = ["runtime/odbc"]
+postgres = ["runtime/postgres"]
+release = []
+snowflake = ["runtime/snowflake"]
+spark = ["runtime/spark"]
+sqlite = ["runtime/sqlite"]
+sharepoint = ["runtime/sharepoint"]
+postgres-write = ["runtime/postgres-write"]

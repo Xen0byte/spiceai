@@ -1,0 +1,22 @@
+[package]
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+name = "spicepod"
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+fundu.workspace = true
+schemars = { version = "0.8.19", optional = true }
+serde = { workspace = true, features = ["derive", "rc"] }
+serde-value = "0.7.0"
+serde_json.workspace = true
+serde_yaml.workspace = true
+snafu.workspace = true
+tracing.workspace = true
+
+[features]
+default = []
+schemars = ["dep:schemars"]

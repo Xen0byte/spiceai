@@ -4,7 +4,6 @@
 *.dll
 *.so
 *.dylib
-pkg/dashboard/build
 cmd/spice/spice
 cmd/spice/.spice
 cmd/spice/data
@@ -12,6 +11,12 @@ cmd/spiced/spiced
 cmd/spiced/.spice
 cmd/spiced/data
 spicepods
+
+*.parquet
+spicepod.yaml
+!test/tpc-bench/tpch-spicepod/spicepod.yaml
+
+target/
 
 # Debug binaries
 __debug_bin
@@ -38,5 +43,18 @@ __pycache__
 venv
 .venv
 
-# Dashboard
-*.fasthttp.br
+/test/tpc-bench/tmp/
+/test/tpc-bench/tpch-kit
+/test/tpc-bench/tpcds-kit
+
+.vscode/settings.json
+
+# Nix
+/result
+
+.env
+.spice
+.data/
+data/
+./testoperator
+!test/spicepods/

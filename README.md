@@ -1,218 +1,531 @@
-# Spice.ai
-
-[![build](https://github.com/spiceai/spiceai/actions/workflows/e2e_test.yml/badge.svg?branch=trunk&event=push)](https://github.com/spiceai/spiceai/actions/workflows/e2e_test.yml)
-[![CodeQL](https://github.com/spiceai/spiceai/actions/workflows/codeql-analysis.yml/badge.svg?branch=trunk&event=push)](https://github.com/spiceai/spiceai/actions/workflows/codeql-analysis.yml)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Discord](https://img.shields.io/discord/803820740868571196)](https://discord.gg/kZnTfneP5u)
-[![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/spiceai?style=social)](https://www.reddit.com/r/spiceai)
-[![Follow on Twitter](https://img.shields.io/twitter/follow/spiceaihq.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=spiceaihq)
-
-**Spice.ai** makes it easy for developers to build apps that learn and adapt by streamlining the use of machine learning (ML) in software. Combined with time-series data, developers can create applications that continuously improve using ML recommendations.
-
-Spice.ai takes a developer-first approach, and is focused on a fast, iterative, inner development loop, enabling developers to get started with ML in minutes instead of months.
-
----
-
-⚠️ **DEVELOPER PREVIEW ONLY** Spice.ai is under active **alpha** stage development and is not intended to be used in production until its **1.0-stable** release.
-
----
-
-📢 Read the Spice.ai announcement blog post at [blog.spiceai.org](https://blog.spiceai.org).
-
-📺 View a getting started walkthrough of Spice.ai in action [here](https://www.youtube.com/watch?v=DKBLjuAz_lI).
-
-💻 Learn about our [approach to building intelligent applications](https://blog.spiceai.org/posts/2021/11/05/making-apps-that-learn-and-adapt/) and not just "doing AI"
-
-## Features
-
-The Spice.ai runtime is written in Golang and Python and runs as a container or microservice. It's deployable to any public cloud, on-premises, and edge. It is configured with a simple manifest and accessed by HTTP APIs.
-
-Spice.ai includes:
-
-- A lightweight, portable ML runtime accessible by simple HTTP APIs, allowing developers to use their preferred languages and frameworks
-- A dashboard to visualize data and learning
-- A developer-friendly CLI
-- Simple, git-committable, configuration and code
-
-### Community-Driven Data Components
-
-Spice.ai also includes a library of community-driven [data components](https://github.com/spiceai/data-components-contrib) for streaming and processing time series data, enabling developers to quickly and easily combine data with learning to create intelligent models.
-
-### Spicepod registry
-
-Modern developers build with the community by leveraging registries such as npm, NuGet, and pip. The Spice.ai platform includes [spicerack.org](https://spicerack.org), the registry for ML building blocks.
-
-As the community shares their ML building blocks (aka Spicepods, or pods for short), developers can quickly add them to their Spice.ai applications enabling them to stream data and build learning into their applications quickly and easily. Initially, Spicepods contain simple definitions of how the app should learn, and eventually will enable the sharing and use of fully-trained models.
-
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/80174/132382372-c32cc8b7-25f2-4f82-8f9f-e4778fb69254.png" width="600" />
+  <img src="https://github.com/user-attachments/assets/13ff4c9d-d6a7-4c20-9408-45573c508c41" alt="spice oss logo" width="600"/>
+</p>
+<p align="center">
+  <a href="https://github.com/spiceai/spiceai/actions/workflows/codeql-analysis.yml"><img src="https://github.com/spiceai/spiceai/actions/workflows/codeql-analysis.yml/badge.svg?branch=trunk&event=push" alt="CodeQL"/></a>
+  <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache-2.0"/></a>
+  <a href="https://discord.gg/kZnTfneP5u"><img src="https://img.shields.io/discord/803820740868571196" alt="Discord"/></a>
+  <a href="https://x.com/intent/follow?screen_name=spice_ai"><img src="https://img.shields.io/twitter/follow/spice_ai.svg?style=social&logo=x" alt="Follow on X"/></a>
 </p>
 
-## Why Spice.ai?
+<p align="center">
+  <a href="https://github.com/spiceai/spiceai/actions/workflows/build_and_release.yml"><img alt="GitHub Actions Workflow Status - build" src="https://img.shields.io/github/actions/workflow/status/spiceai/spiceai/build_and_release.yml?branch=trunk" /></a>
+  <a href="https://github.com/spiceai/spiceai/actions/workflows/spiced_docker_nightly.yml"><img alt="GitHub Actions Workflow Status - docker build" src="https://img.shields.io/github/actions/workflow/status/spiceai/spiceai/spiced_docker_nightly.yml?label=docker%20build" /></a>
+  <a href="https://github.com/spiceai/spiceai/actions/workflows/pr.yml"><img alt="GitHub Actions Workflow Status - unit tests" src="https://img.shields.io/github/actions/workflow/status/spiceai/spiceai/pr.yml?event=merge_group&label=unit%20tests" /></a>
+  <a href="https://github.com/spiceai/spiceai/actions/workflows/integration.yml"><img alt="GitHub Actions Workflow Status - integration tests" src="https://img.shields.io/github/actions/workflow/status/spiceai/spiceai/integration.yml?event=pull_request&label=integration%20tests" /></a>
+  <a href="https://github.com/spiceai/spiceai/actions/workflows/integration_models.yml"><img alt="GitHub Actions Workflow Status - integration tests (models)" src="https://img.shields.io/github/actions/workflow/status/spiceai/spiceai/integration_models.yml?event=pull_request&label=integration%20tests%20(models)" /></a>
+  <a href="https://github.com/spiceai/spiceai/actions/workflows/benchmarks.yml"><img alt="GitHub Actions Workflow Status - benchmark tests" src="https://img.shields.io/github/actions/workflow/status/spiceai/spiceai/benchmarks.yml?branch=trunk&label=benchmark%20tests" /></a>
+</p>
 
-Spice.ai is for developers who want to build intelligent applications but don't have the time or resources to learn, build and integrate the required ML to do so.
+**Spice** is a SQL query and AI compute engine, written in Rust, for data-driven apps and agents.
 
-Imagine you have timestamped measurements of the room temperature and access to air-conditioning controls. If you had a time-series ML engine, your application could optimize when the A/C activates. You could reduce energy usage by not overcooling the room as the temperature drops.
+<img width="740" alt="Spice.ai Open Source accelerated data query and LLM-inference engine" src="https://github.com/user-attachments/assets/9db94f9c-10a1-47b0-ab45-05aa964590ff" />
 
-Now imagine learning Python or R, neural networks, deep-learning algorithms and building a system that streams and processes time-series data to do that. With Spice.ai — which includes a time-series ML engine accessible over HTTP APIs, a library of community-driven components for data streaming and processing, and an ecosystem of pre-created ML configurations — you can build upon the experience of the community instead of doing it all yourself. You can focus on business logic and building your application instead of the ML.
+Spice provides three industry standard APIs in a lightweight, portable runtime (single ~140 MB binary):
 
-### Pre-release software
+1. **SQL Query APIs**: Arrow Flight, Arrow Flight SQL, ODBC, JDBC, and ADBC.
+2. **OpenAI-Compatible APIs**: HTTP APIs compatible the OpenAI SDK, AI SDK with local model serving (CUDA/Metal accelerated) and gateway to hosted models.
+3. **Iceberg Catalog REST APIs**: A unified Iceberg Catalog API.
 
-⚠️ The vision to make it easy to build intelligent applications that learn is a vast undertaking. We haven't figured it all out or solved all the problems yet, so we’re inviting you on this journey and are looking for feedback the direction.
+🎯 Goal: Developers can focus on building data apps and AI agents confidently, knowing they are grounded in data.
 
-Spice.ai and spicerack.org are both pre-release, early, alpha software. Until v1.0, Spice.ai may have gaps, including limited deep learning algorithms, training-at-scale, and simulated environments. Also, Spicepods aren't searchable or listed on spicerack.org yet.
+Spice is primarily used for:
 
-Our intention with this preview is to work with developers early to define and create the developer experience together. 🚀 See the [Roadmap to v1.0-stable](https://github.com/spiceai/spiceai/blob/trunk/docs/ROADMAP.md#spice-ai-v10-stable-roadmap) for upcoming features.
+- **Data Federation**: SQL query across any database, data warehouse, or data lake. [Learn More](https://spiceai.org/docs/features/federated-queries).
+- **Data Materialization and Acceleration**: Materialize, accelerate, and cache database queries. [Read the MaterializedView interview - Building a CDN for Databases](https://materializedview.io/p/building-a-cdn-for-databases-spice-ai)
+- **AI apps and agents**: An AI-database powering retrieval-augmented generation (RAG) and intelligent agents. [Learn More](https://spiceai.org/docs/use-cases/rag).
 
-### Join us!
+If you want to build with DataFusion or using DuckDB, Spice provides a simple, flexible, and production-ready engine you can just use.
 
-We greatly appreciate and value your support! You can help Spice.ai in a number of ways:
+📣 Read the [Spice.ai OSS announcement blog post](https://blog.spiceai.org/posts/2024/03/28/adding-spice-the-next-generation-of-spice.ai-oss/).
 
-- ⭐️ Star this repo.
-- Build an app with Spice.ai and send us feedback and suggestions at [hey@spice.ai](mailto:hey@spice.ai) or on [Discord](https://discord.gg/kZnTfneP5u).
-- [File an issue](https://github.com/spiceai/spiceai/issues/new) if you see something not quite working correctly.
-- Follow us on [Reddit](https://www.reddit.com/r/spiceai), [Twitter](https://twitter.com/SpiceAIHQ), and [LinkedIn](https://www.linkedin.com/company/74148478).
-- Join our team ([We’re hiring!](https://spice.ai/careers))
-- Contribute code or documentation to the project (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+Spice is built-on industry leading technologies including [Apache DataFusion](https://datafusion.apache.org), Apache Arrow, Arrow Flight, SQLite, and DuckDB.
 
-We’re also starting a community call series soon!
+<div align="center">
+  <picture>
+    <img width="600" alt="How Spice works." src="https://github.com/spiceai/spiceai/assets/80174/7d93ae32-d6d8-437b-88d3-d64fe089e4b7" />
+  </picture>
+</div>
 
-Thank you for sharing this journey with us.
+🎥 [Watch the CMU Databases Accelerating Data and AI with Spice.ai Open-Source](https://www.youtube.com/watch?v=tyM-ec1lKfU)
 
-## Getting started with Spice.ai
+## Why Spice?
 
-First, ⭐️ star this repo! Thank you for your support! 🙏
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/spiceai/spiceai/assets/80174/96b5fcef-a550-4ce8-a74a-83931275e83e">
+    <img width="800" alt="Spice.ai" src="https://github.com/spiceai/spiceai/assets/80174/29e4421d-8942-4f2a-8397-e9d4fdeda36b" />
+  </picture>
+</div>
 
-Then, follow this guide to get started quickly with Spice.ai. For a more comprehensive guide, see the full [online documentation](https://docs.spiceai.org/). Also check out our video walkthrough on [getting started](https://www.youtube.com/watch?v=DKBLjuAz_lI).
+Spice simplifies building data-driven AI applications and agents by making it fast and easy to query, federate, and accelerate data from one or more sources using SQL, while grounding AI in real-time, reliable data. Co-locate datasets with apps and AI models to power AI feedback loops, enable RAG and search, and deliver fast, low-latency data-query and AI-inference with full control over cost and performance.
 
-### Current hosting limitations
+### How is Spice different?
 
-- Docker is required. Self-host and metal support is on the roadmap.
-- Only macOS and Linux are natively supported. [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) is required for Windows.
-- darwin/arm64 is not yet supported (i.e. Apple's M1 Macs). We use M1s ourselves, so we hope to support this very soon. :-)
+1. **AI-Native Runtime**: Spice combines data query and AI inference in a single engine, for data-grounded AI and accurate AI.
 
-⭐️ We highly recommend using [GitHub Codespaces](https://github.com/features/codespaces) to get started. Codespaces enables you to run Spice.ai in a virtual environment in the cloud. If you use Codespaces, the install is not required and you may skip to the [Getting Started with Codespaces](#getting-started-with-codespaces) section.
+2. **Application-Focused**: Designed to run distributed at the application and agent level, often as a 1:1 or 1:N mapping between app and Spice instance, unlike traditional data systems built for many apps on one centralized database. It’s common to spin up multiple Spice instances—even one per tenant or customer.
 
-### Installation (local machine)
+3. **Dual-Engine Acceleration**: Supports both **OLAP** (Arrow/DuckDB) and **OLTP** (SQLite/PostgreSQL) engines at the dataset level, providing flexible performance across analytical and transactional workloads.
 
-1. Install Docker
-2. Install the Spice CLI
+4. **Disaggregated Storage**: Separation of compute from disaggregated storage, co-locating local, materialized working sets of data with applications, dashboards, or ML pipelines while accessing source data in its original storage.
 
-**Step 1. Install Docker**: While self-hosting on baremetal hardware will be supported, the Developer Preview currently requires Docker. To install Docker, please follow [these instructions](https://docs.docker.com/get-docker/).
+5. **Edge to Cloud Native**: Deploy as a standalone instance, Kubernetes sidecar, microservice, or cluster—across edge/POP, on-prem, and public clouds. Chain multiple Spice instances for tier-optimized, distributed deployments.
 
-**Step 2. Install the Spice CLI**: Run the following `curl` command in your terminal.
+## How does Spice compare?
+
+### Data Query and Analytics
+
+| Feature                          | **Spice**                              | Trino / Presto       | Dremio                | ClickHouse          | Materialize          |
+| -------------------------------- | -------------------------------------- | -------------------- | --------------------- | ------------------- | -------------------- |
+| **Primary Use-Case**             | Data & AI apps/agents                  | Big data analytics   | Interactive analytics | Real-time analytics | Real-time analytics  |
+| **Primary deployment model**     | Sidecar                                | Cluster              | Cluster               | Cluster             | Cluster              |
+| **Federated Query Support**      | ✅                                     | ✅                   | ✅                    | ―                   | ―                    |
+| **Acceleration/Materialization** | ✅ (Arrow, SQLite, DuckDB, PostgreSQL) | Intermediate storage | Reflections (Iceberg) | Materialized views  | ✅ (Real-time views) |
+| **Catalog Support**              | ✅ (Iceberg, Unity Catalog)            | ✅                   | ✅                    | ―                   | ―                    |
+| **Query Result Caching**         | ✅                                     | ✅                   | ✅                    | ✅                  | Limited              |
+| **Multi-Modal Acceleration**     | ✅ (OLAP + OLTP)                       | ―                    | ―                     | ―                   | ―                    |
+| **Change Data Capture (CDC)**    | ✅ (Debezium)                          | ―                    | ―                     | ―                   | ✅ (Debezium)        |
+
+### AI Apps and Agents
+
+| Feature                       | **Spice**                            | LangChain          | LlamaIndex | AgentOps.ai      | Ollama                        |
+| ----------------------------- | ------------------------------------ | ------------------ | ---------- | ---------------- | ----------------------------- |
+| **Primary Use-Case**          | Data & AI apps                       | Agentic workflows  | RAG apps   | Agent operations | LLM apps                      |
+| **Programming Language**      | Any language (HTTP interface)        | JavaScript, Python | Python     | Python           | Any language (HTTP interface) |
+| **Unified Data + AI Runtime** | ✅                                   | ―                  | ―          | ―                | ―                             |
+| **Federated Data Query**      | ✅                                   | ―                  | ―          | ―                | ―                             |
+| **Accelerated Data Access**   | ✅                                   | ―                  | ―          | ―                | ―                             |
+| **Tools/Functions**           | ✅                                   | ✅                 | ✅         | Limited          | Limited                       |
+| **LLM Memory**                | ✅                                   | ✅                 | ―          | ✅               | ―                             |
+| **Evaluations (Evals)**       | ✅                                   | Limited            | ―          | Limited          | ―                             |
+| **Search**                    | ✅ (VSS)                             | ✅                 | ✅         | Limited          | Limited                       |
+| **Caching**                   | ✅ (Query and results caching)       | Limited            | ―          | ―                | ―                             |
+| **Embeddings**                | ✅ (Built-in & pluggable models/DBs) | ✅                 | ✅         | Limited          | ―                             |
+
+✅ = Fully supported
+❌ = Not supported
+Limited = Partial or restricted support
+
+## Example Use-Cases
+
+### Data-grounded Agentic AI Applications
+
+- **OpenAI-compatible API**: Connect to hosted models (OpenAI, Anthropic, xAI) or deploy locally (Llama, NVIDIA NIM). [AI Gateway Recipe](https://github.com/spiceai/cookbook/blob/trunk/openai_sdk/README.md)
+- **Federated Data Access**: Query using SQL and NSQL (text-to-SQL) across databases, data warehouses, and data lakes with advanced query push-down for fast retrieval across disparate data sources. [Federated SQL Query Recipe](https://github.com/spiceai/cookbook/blob/trunk/federation/README.md)
+- **Search and RAG**: Search and retrieve context with accelerated embeddings for retrieval-augmented generation (RAG) workflows. [Vector Search over GitHub Files](https://github.com/spiceai/cookbook/blob/trunk/search_github_files/README.md)
+- **LLM Memory and Observability**: Store and retrieve history and context for AI agents while gaining deep visibility into data flows, model performance, and traces. [LLM Memory Recipe](https://github.com/spiceai/cookbook/blob/trunk/llm-memory/README.md) | [Monitoring Features Documentation](https://spiceai.org/docs/features/monitoring)
+
+### Database CDN and Query Mesh
+
+- **Data Acceleration**: Co-locate materialized datasets in Arrow, SQLite, and DuckDB with applications for sub-second query. [DuckDB Data Accelerator Recipe](https://github.com/spiceai/cookbook/blob/trunk/duckdb/accelerator/README.md)
+- **Resiliency and Local Dataset Replication**: Maintain application availability with local replicas of critical datasets. [Local Dataset Replication Recipe](https://github.com/spiceai/cookbook/blob/trunk/localpod/README.md)
+- **Responsive Dashboards**: Enable fast, real-time analytics by accelerating data for frontends and BI tools. [Sales BI Dashboard Demo](https://github.com/spiceai/cookbook/blob/trunk/sales-bi/README.md)
+- **Simplified Legacy Migration**: Use a single endpoint to unify legacy systems with modern infrastructure, including federated SQL querying across multiple sources. [Federated SQL Query Recipe](https://github.com/spiceai/cookbook/blob/trunk/federation/README.md)
+
+### Retrieval-Augmented Generation (RAG)
+
+- **Unified Search with Vector Similarity**: Perform efficient vector similarity search across structured and unstructured data sources. [Vector Search over GitHub Files](https://github.com/spiceai/cookbook/blob/trunk/search_github_files/README.md)
+- **Semantic Knowledge Layer**: Define a semantic context model to enrich data for AI. [Semantic Model Feature Documentation](https://spiceai.org/docs/features/semantic-model)
+- **Text-to-SQL**: Convert natural language queries into SQL using built-in NSQL and sampling tools for accurate query. [Text-to-SQL Recipe](https://github.com/spiceai/cookbook/blob/trunk/text-to-sql/README.md)
+- **Model and Data Evaluations**: Assess model performance and data quality with integrated evaluation tools. [Language Model Evaluations Recipe](https://github.com/spiceai/cookbook/blob/trunk/evals/README.md)
+
+## FAQ
+
+- **Is Spice a cache?** No specifically; you can think of Spice data acceleration as an _active_ cache, materialization, or data prefetcher. A cache would fetch data on a cache-miss while Spice prefetches and materializes filtered data on an interval, trigger, or as data changes using CDC. In addition to acceleration Spice supports [results caching](https://spiceai.org/docs/features/caching).
+
+- **Is Spice a CDN for databases?** Yes, a common use-case for Spice is as a CDN for different data sources. Using CDN concepts, Spice enables you to ship (load) a working set of your database (or data lake, or data warehouse) where it's most frequently accessed, like from a data-intensive application or for AI context.
+
+### Watch a 30-sec BI dashboard acceleration demo
+
+<https://github.com/spiceai/spiceai/assets/80174/7735ee94-3f4a-4983-a98e-fe766e79e03a>
+
+See more demos on [YouTube](https://www.youtube.com/playlist?list=PLesJrUXEx3U9anekJvbjyyTm7r9A26ugK).
+
+## Supported Data Connectors
+
+| Name                               | Description                           | Status            | Protocol/Format              |
+| ---------------------------------- | ------------------------------------- | ----------------- | ---------------------------- |
+| `databricks (mode: delta_lake)`    | [Databricks][databricks]              | Stable            | S3/Delta Lake                |
+| `delta_lake`                       | Delta Lake                            | Stable            | Delta Lake                   |
+| `dremio`                           | [Dremio][dremio]                      | Stable            | Arrow Flight                 |
+| `duckdb`                           | DuckDB                                | Stable            | Embedded                     |
+| `file`                             | File                                  | Stable            | Parquet, CSV                 |
+| `github`                           | GitHub                                | Stable            | GitHub API                   |
+| `postgres`                         | PostgreSQL                            | Stable            |                              |
+| `s3`                               | [S3][s3]                              | Stable            | Parquet, CSV                 |
+| `mysql`                            | MySQL                                 | Stable            |                              |
+| `graphql`                          | GraphQL                               | Release Candidate | JSON                         |
+| `databricks (mode: spark_connect)` | [Databricks][databricks]              | Beta              | [Spark Connect][spark]       |
+| `flightsql`                        | FlightSQL                             | Beta              | Arrow Flight SQL             |
+| `iceberg`                          | [Apache Iceberg][iceberg]             | Beta              | Parquet                      |
+| `mssql`                            | Microsoft SQL Server                  | Beta              | Tabular Data Stream (TDS)    |
+| `odbc`                             | ODBC                                  | Beta              | ODBC                         |
+| `snowflake`                        | Snowflake                             | Beta              | Arrow                        |
+| `spark`                            | Spark                                 | Beta              | [Spark Connect][spark]       |
+| `spice.ai`                         | [Spice.ai][spiceai]                   | Beta              | Arrow Flight                 |
+| `abfs`                             | Azure BlobFS                          | Alpha             | Parquet, CSV                 |
+| `clickhouse`                       | Clickhouse                            | Alpha             |                              |
+| `debezium`                         | Debezium CDC                          | Alpha             | Kafka + JSON                 |
+| `dynamodb`                         | Amazon DynamoDB                       | Alpha             |                              |
+| `ftp`, `sftp`                      | FTP/SFTP                              | Alpha             | Parquet, CSV                 |
+| `http`, `https`                    | HTTP(s)                               | Alpha             | Parquet, CSV                 |
+| `localpod`                         | [Local dataset replication][localpod] | Alpha             |                              |
+| `sharepoint`                       | Microsoft SharePoint                  | Alpha             | Unstructured UTF-8 documents |
+| `mongodb`                          | MongoDB                               | Coming Soon       |                              |
+| `elasticsearch`                    | ElasticSearch                         | Roadmap           |                              |
+
+[databricks]: https://github.com/spiceai/cookbook/tree/trunk/databricks/delta_lake
+[spark]: https://spark.apache.org/docs/latest/spark-connect-overview.html
+[s3]: https://github.com/spiceai/cookbook/tree/trunk/s3#readme
+[spiceai]: https://github.com/spiceai/cookbook/tree/trunk/spiceai#readme
+[dremio]: https://github.com/spiceai/cookbook/tree/trunk/dremio#readme
+[localpod]: https://github.com/spiceai/cookbook/blob/trunk/localpod/README.md
+[iceberg]: https://github.com/spiceai/cookbook/tree/trunk/catalogs/iceberg#readme
+
+## Supported Data Accelerators
+
+| Name       | Description                      | Status            | Engine Modes     |
+| ---------- | -------------------------------- | ----------------- | ---------------- |
+| `arrow`    | [In-Memory Arrow Records][arrow] | Stable            | `memory`         |
+| `duckdb`   | Embedded [DuckDB][duckdb]        | Stable            | `memory`, `file` |
+| `postgres` | Attached [PostgreSQL][postgres]  | Release Candidate | N/A              |
+| `sqlite`   | Embedded [SQLite][sqlite]        | Release Candidate | `memory`, `file` |
+
+[arrow]: https://spiceai.org/docs/components/data-accelerators/arrow
+[duckdb]: https://spiceai.org/docs/components/data-accelerators/duckdb
+[postgres]: https://spiceai.org/docs/components/data-accelerators/postgres
+[sqlite]: https://spiceai.org/docs/components/data-accelerators/sqlite
+
+## Supported Model Providers
+
+| Name          | Description                                  | Status            | ML Format(s) | LLM Format(s)                   |
+| ------------- | -------------------------------------------- | ----------------- | ------------ | ------------------------------- |
+| `openai`      | OpenAI (or compatible) LLM endpoint          | Release Candidate | -            | OpenAI-compatible HTTP endpoint |
+| `file`        | Local filesystem                             | Beta              | ONNX         | GGUF, GGML, SafeTensor          |
+| `huggingface` | Models hosted on HuggingFace                 | Beta              | ONNX         | GGUF, GGML, SafeTensor          |
+| `spice.ai`    | Models hosted on the Spice.ai Cloud Platform |                   | ONNX         | OpenAI-compatible HTTP endpoint |
+| `azure`       | Azure OpenAI                                 |                   | -            | OpenAI-compatible HTTP endpoint |
+| `anthropic`   | Models hosted on Anthropic                   | Alpha             | -            | OpenAI-compatible HTTP endpoint |
+| `xai`         | Models hosted on xAI                         | Alpha             | -            | OpenAI-compatible HTTP endpoint |
+
+## Supported Embeddings Providers
+
+| Name          | Description                                  | Status            | ML Format(s) | LLM Format(s)\*                 |
+| --------------| -------------------------------------------- | ----------------- | ------------ | ------------------------------- |
+| `openai`      | OpenAI (or compatible) LLM endpoint          | Release Candidate | -            | OpenAI-compatible HTTP endpoint |
+| `file`        | Local filesystem                             | Release Candidate | ONNX         | GGUF, GGML, SafeTensor          |
+| `huggingface` | Models hosted on HuggingFace                 | Release Candidate | ONNX         | GGUF, GGML, SafeTensor          |
+| `azure`       | Azure OpenAI                                 | Alpha             | -            | OpenAI-compatible HTTP endpoint |
+
+## Supported Catalogs
+
+Catalog Connectors connect to external catalog providers and make their tables available for federated SQL query in Spice. Configuring accelerations for tables in external catalogs is not supported. The schema hierarchy of the external catalog is preserved in Spice.
+
+| Name            | Description             | Status      | Protocol/Format              |
+| --------------- | ----------------------- | ----------- | ---------------------------- |
+| `unity_catalog` | Unity Catalog           | Stable      | Delta Lake                   |
+| `databricks`    | Databricks              | Beta        | Spark Connect, S3/Delta Lake |
+| `iceberg`       | Apache Iceberg          | Beta        | Parquet                      |
+| `spice.ai`      | Spice.ai Cloud Platform | Alpha       | Arrow Flight                 |
+| `glue`          | AWS Glue                | Coming Soon | JSON, Parquet, Iceberg       |
+
+## ⚡️ Quickstart (Local Machine)
+
+<https://github.com/spiceai/spiceai/assets/88671039/85cf9a69-46e7-412e-8b68-22617dcbd4e0>
+
+**Step 1.** Install the Spice CLI:
+
+On **macOS, Linux, and WSL**:
 
 ```bash
 curl https://install.spiceai.org | /bin/bash
 ```
 
-You may need to restart your terminal for the `spice` command to be added to your PATH.
-
-### Getting started with Codespaces
-
-The recommended way to get started with Spice.ai is to use GitHub Codespaces.
-
-Create a new GitHub Codespace in the `spiceai/quickstarts` repo at [github.com/spiceai/quickstarts/codespaces](https://github.com/spiceai/quickstarts/codespaces).
-
-<img src="https://user-images.githubusercontent.com/80174/130397022-e882fc26-06fd-49da-ae35-03383221c63d.png" width="300">
-
-Once you open the Codespace, Spice.ai and everything you need to get started will already be installed. Continue on to train your first pod.
-
-### Create your first Spicepod and train it
-
-A [Spicepod](https://docs.spiceai.org/concepts/#pod) is simply a collection of configuration and data that is used to train and deploy your own AI.
-
-We will add intelligence to a sample application, **ServerOps**, by creating and training a Spicepod that offers recommendations to the application for different server operations, such as performing server maintenance.
-
-If you are using GitHub Codespaces, skip Step 1. and continue with Step 2., as the repository will already be cloned.
-
-Step 1. Clone the Spice.ai quickstarts repository:
+Or using `brew`:
 
 ```bash
-cd $HOME
-git clone https://github.com/spiceai/quickstarts
-cd quickstarts/serverops
+brew install spiceai/spiceai/spice
 ```
 
-Step 2. Start the Spice runtime with `spice run`:
+On **Windows**:
 
 ```bash
-cd $HOME/quickstarts/serverops
+curl -L "https://install.spiceai.org/Install.ps1" -o Install.ps1 && PowerShell -ExecutionPolicy Bypass -File ./Install.ps1
+```
+
+**Step 2.** Initialize a new Spice app with the `spice init` command:
+
+```bash
+spice init spice_qs
+```
+
+A `spicepod.yaml` file is created in the `spice_qs` directory. Change to that directory:
+
+```bash
+cd spice_qs
+```
+
+**Step 3.** Start the Spice runtime:
+
+```bash
 spice run
 ```
 
-Step. 3. In a new terminal, add the ServerOps quickstart pod:
-
-So that we can leave Spice.ai running, add the quickstart pod in a new terminal tab or window. If you are running in GitHub Codespaces, you can open a new terminal by clicking the split-terminal button in VS Code.
+Example output will be shown as follows:
 
 ```bash
-spice add quickstarts/serverops
+2025/01/20 11:26:10 INFO Spice.ai runtime starting...
+2025-01-20T19:26:10.679068Z  INFO runtime::init::dataset: No datasets were configured. If this is unexpected, check the Spicepod configuration.
+2025-01-20T19:26:10.679716Z  INFO runtime::flight: Spice Runtime Flight listening on 127.0.0.1:50051
+2025-01-20T19:26:10.679786Z  INFO runtime::metrics_server: Spice Runtime Metrics listening on 127.0.0.1:9090
+2025-01-20T19:26:10.680140Z  INFO runtime::http: Spice Runtime HTTP listening on 127.0.0.1:8090
+2025-01-20T19:26:10.682080Z  INFO runtime::opentelemetry: Spice Runtime OpenTelemetry listening on 127.0.0.1:50052
+2025-01-20T19:26:10.879126Z  INFO runtime::init::results_cache: Initialized results cache; max size: 128.00 MiB, item ttl: 1s
 ```
 
-The Spice.ai CLI will download the ServerOps quickstart pod and add the pod manifest to your project at `spicepods/serverops.yaml`.
+The runtime is now started and ready for queries.
 
-The Spice runtime will then automatically detect the pod and start your first training run!
-
-> Note, automatic training relies on your system's filewatcher. In some cases, this might be disabled or not work as expected. If training does not start, follow the command to [retrain the pod](#retrain-the-pod) below.
-
-### Observe the pod training
-
-Navigate to [http://localhost:8000](http://localhost:8000) in your favorite browser. You will see an overview of your pods. From here, you can click on the `serverops` pod to see a chart of the pod's training progress.
-
-### Retrain the pod
-
-In addition to automatic training on each manifest change, training can be started by using the Spice CLI from within your app directory.
+**Step 4.** In a new terminal window, add the `spiceai/quickstart` Spicepod. A Spicepod is a package of configuration defining datasets and ML models.
 
 ```bash
-spice train serverops
+spice add spiceai/quickstart
 ```
 
-### Get a recommendation
+The `spicepod.yaml` file will be updated with the `spiceai/quickstart` dependency.
 
-After training the pod, you can now get a recommendation for an action from it!
+```yaml
+version: v1
+kind: Spicepod
+name: spice_qs
+dependencies:
+  - spiceai/quickstart
+```
+
+The `spiceai/quickstart` Spicepod will add a `taxi_trips` data table to the runtime which is now available to query by SQL.
 
 ```bash
-curl http://localhost:8000/api/v0.1/pods/serverops/recommendation
+2025-01-20T19:26:30.011633Z  INFO runtime::init::dataset: Dataset taxi_trips registered (s3://spiceai-demo-datasets/taxi_trips/2024/), acceleration (arrow), results cache enabled.
+2025-01-20T19:26:30.013002Z  INFO runtime::accelerated_table::refresh_task: Loading data for dataset taxi_trips
+2025-01-20T19:26:40.312839Z  INFO runtime::accelerated_table::refresh_task: Loaded 2,964,624 rows (399.41 MiB) for dataset taxi_trips in 10s 299ms
 ```
 
-### Run the ServerOps application
-
-To see how Spice.ai makes creating intelligent applications easy, try running and reviewing the sample ServerOps Node or Powershell apps, `serverops.js` and `serverops.ps1`.
-
-Node:
+**Step 5.** Start the Spice SQL REPL:
 
 ```bash
-npm install
-node serverops.js
+spice sql
 ```
 
-Powershell:
+The SQL REPL inferface will be shown:
 
-```ps
-./serverops.ps1
+```bash
+Welcome to the Spice.ai SQL REPL! Type 'help' for help.
+
+show tables; -- list available tables
+sql>
 ```
 
-### Next steps
+Enter `show tables;` to display the available tables for query:
 
-Congratulations! In just a few minutes you downloaded and installed the Spice.ai CLI and runtime, created your first Spicepod, trained it, and got a recommendation from it.
+```bash
+sql> show tables;
++---------------+--------------+---------------+------------+
+| table_catalog | table_schema | table_name    | table_type |
++---------------+--------------+---------------+------------+
+| spice         | public       | taxi_trips    | BASE TABLE |
+| spice         | runtime      | query_history | BASE TABLE |
+| spice         | runtime      | metrics       | BASE TABLE |
++---------------+--------------+---------------+------------+
 
-This is just the start of the journey with Spice.ai. Next, try one of the quickstart tutorials or in-depth samples for creating intelligent applications.
+Time: 0.022671708 seconds. 3 rows.
+```
 
-**Try:**
+Enter a query to display the longest taxi trips:
 
-- [ServerOps sample](https://github.com/spiceai/samples/tree/trunk/serverops/README.md) - a more in-depth version of the quickstart you just completed, using CPU metrics from your own machine
-- [Gardener sample](https://github.com/spiceai/samples/tree/trunk/gardener/README.md) - Intelligently water a simulated garden
-- [Trader quickstart](https://github.com/spiceai/quickstarts/tree/trunk/trader/README.md) - a basic Bitcoin trading bot
+```sql
+SELECT trip_distance, total_amount FROM taxi_trips ORDER BY trip_distance DESC LIMIT 10;
+```
 
-## Community
+Output:
 
-Spice.ai started with the vision to make AI easy for developers. We are building Spice.ai in the open and with the community. Reach out on Discord or by email to get involved. We will be starting a community call series soon!
+```bash
++---------------+--------------+
+| trip_distance | total_amount |
++---------------+--------------+
+| 312722.3      | 22.15        |
+| 97793.92      | 36.31        |
+| 82015.45      | 21.56        |
+| 72975.97      | 20.04        |
+| 71752.26      | 49.57        |
+| 59282.45      | 33.52        |
+| 59076.43      | 23.17        |
+| 58298.51      | 18.63        |
+| 51619.36      | 24.2         |
+| 44018.64      | 52.43        |
++---------------+--------------+
 
-- Discord: [![Discord Banner](https://discord.com/api/guilds/803820740868571196/widget.png?style=shield)](https://discord.gg/kZnTfneP5u)
-- Reddit: [![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/spiceai?style=social)](https://www.reddit.com/r/spiceai)
-- Twitter: [@SpiceAIHQ](https://twitter.com/spiceaihq)
-- Email: [hey@spice.ai](mailto:hey@spice.ai)
+Time: 0.045150667 seconds. 10 rows.
+```
 
-### Contributing to Spice.ai
+## ⚙️ Runtime Container Deployment
 
-See [CONTRIBUTING.md](/CONTRIBUTING.md).
+Using the [Docker image](https://hub.docker.com/r/spiceai/spiceai) locally:
+
+```bash
+docker pull spiceai/spiceai
+```
+
+In a Dockerfile:
+
+```dockerfile
+from spiceai/spiceai:latest
+```
+
+Using Helm:
+
+```bash
+helm repo add spiceai https://helm.spiceai.org
+helm install spiceai spiceai/spiceai
+```
+
+## 🏎️ Next Steps
+
+### Explore the Spice.ai Cookbook
+
+The Spice.ai Cookbook is a collection of recipes and examples for using Spice. Find it at [https://github.com/spiceai/cookbook](https://github.com/spiceai/cookbook#readme).
+
+### Using Spice.ai Cloud Platform
+
+Access ready-to-use Spicepods and datasets hosted on the Spice.ai Cloud Platform using the Spice runtime. A list of public Spicepods is available on Spicerack: [https://spicerack.org/](https://spicerack.org/).
+
+To use public datasets, create a free account on Spice.ai:
+
+1. Visit [spice.ai](https://spice.ai/) and click **Try for Free**.
+   ![Try for Free](https://github.com/spiceai/spiceai/assets/112157037/27fb47ed-4825-4fa8-94bd-48197406cfaa)
+
+2. After creating an account, create an app to generate an API key.
+   ![Create App](https://github.com/spiceai/spiceai/assets/112157037/d2446406-1f06-40fb-8373-1b6d692cb5f7)
+
+Once set up, you can access ready-to-use Spicepods including datasets. For this demonstration, use the `taxi_trips` dataset from the [Spice.ai Quickstart](https://spice.ai/spiceai/quickstart).
+
+**Step 1.** Initialize a new project.
+
+```bash
+# Initialize a new Spice app
+spice init spice_app
+
+# Change to app directory
+cd spice_app
+```
+
+**Step 2.** Log in and authenticate from the command line using the `spice login` command. A pop up browser window will prompt you to authenticate:
+
+```bash
+spice login
+```
+
+**Step 3.** Start the runtime:
+
+```bash
+# Start the runtime
+spice run
+```
+
+**Step 4.** Configure the dataset:
+
+In a new terminal window, configure a new dataset using the `spice dataset configure` command:
+
+```bash
+spice dataset configure
+```
+
+Enter a dataset name that will be used to reference the dataset in queries. This name does not need to match the name in the dataset source.
+
+```bash
+dataset name: (spice_app) taxi_trips
+```
+
+Enter the description of the dataset:
+
+```bash
+description: Taxi trips dataset
+```
+
+Enter the location of the dataset:
+
+```bash
+from: spice.ai/spiceai/quickstart/datasets/taxi_trips
+```
+
+Select `y` when prompted whether to accelerate the data:
+
+```bash
+Locally accelerate (y/n)? y
+```
+
+You should see the following output from your runtime terminal:
+
+```bash
+2024-12-16T05:12:45.803694Z  INFO runtime::init::dataset: Dataset taxi_trips registered (spice.ai/spiceai/quickstart/datasets/taxi_trips), acceleration (arrow, 10s refresh), results cache enabled.
+2024-12-16T05:12:45.805494Z  INFO runtime::accelerated_table::refresh_task: Loading data for dataset taxi_trips
+2024-12-16T05:13:24.218345Z  INFO runtime::accelerated_table::refresh_task: Loaded 2,964,624 rows (8.41 GiB) for dataset taxi_trips in 38s 412ms.
+```
+
+**Step 5.** In a new terminal window, use the Spice SQL REPL to query the dataset
+
+```bash
+spice sql
+```
+
+```bash
+SELECT tpep_pickup_datetime, passenger_count, trip_distance from taxi_trips LIMIT 10;
+```
+
+The output displays the results of the query along with the query execution time:
+
+```bash
++----------------------+-----------------+---------------+
+| tpep_pickup_datetime | passenger_count | trip_distance |
++----------------------+-----------------+---------------+
+| 2024-01-11T12:55:12  | 1               | 0.0           |
+| 2024-01-11T12:55:12  | 1               | 0.0           |
+| 2024-01-11T12:04:56  | 1               | 0.63          |
+| 2024-01-11T12:18:31  | 1               | 1.38          |
+| 2024-01-11T12:39:26  | 1               | 1.01          |
+| 2024-01-11T12:18:58  | 1               | 5.13          |
+| 2024-01-11T12:43:13  | 1               | 2.9           |
+| 2024-01-11T12:05:41  | 1               | 1.36          |
+| 2024-01-11T12:20:41  | 1               | 1.11          |
+| 2024-01-11T12:37:25  | 1               | 2.04          |
++----------------------+-----------------+---------------+
+
+Time: 0.00538925 seconds. 10 rows.
+```
+
+You can experiment with the time it takes to generate queries when using non-accelerated datasets. You can change the acceleration setting from `true` to `false` in the datasets.yaml file.
+
+### 📄 Documentation
+
+Comprehensive documentation is available at [spiceai.org/docs](https://spiceai.org/docs/).
+
+Over 45 quickstarts and samples available in the [Spice Cookbook](https://github.com/spiceai/cookbook#spiceai-oss-cookbook).
+
+### 🔌 Extensibility
+
+Spice.ai is designed to be extensible with extension points documented at [EXTENSIBILITY.md](./docs/EXTENSIBILITY.md). Build custom [Data Connectors](https://spiceai.org/docs/components/data-connectors), [Data Accelerators](https://spiceai.org/docs/components/data-accelerators), [Catalog Connectors](https://spiceai.org/docs/components/catalogs), [Secret Stores](https://spiceai.org/docs/components/secret-stores), [Models](https://spiceai.org/docs/components/models), or [Embeddings](https://spiceai.org/docs/components/embeddings).
+
+### 🔨 Upcoming Features
+
+🚀 See the [Roadmap to v1.0-stable](https://github.com/spiceai/spiceai/blob/trunk/docs/ROADMAP.md) for upcoming features.
+
+### 🤝 Connect with us
+
+We greatly appreciate and value your support! You can help Spice in a number of ways:
+
+- Build an app with Spice.ai and send us feedback and suggestions at [hey@spice.ai](mailto:hey@spice.ai) or on [Discord](https://discord.gg/kZnTfneP5u), [X](https://twitter.com/spice_ai), or [LinkedIn](https://www.linkedin.com/company/74148478).
+- [File an issue](https://github.com/spiceai/spiceai/issues/new) if you see something not quite working correctly.
+- Join our team ([We’re hiring!](https://spice.ai/careers))
+- Contribute code or documentation to the project (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+- Follow our blog at [blog.spiceai.org](https://blog.spiceai.org)
+
+⭐️ star this repo! Thank you for your support! 🙏

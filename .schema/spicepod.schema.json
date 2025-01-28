@@ -1,0 +1,1343 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Spicepod Definition",
+  "description": "A Spicepod definition is a YAML file that describes a Spicepod.",
+  "type": "object",
+  "required": [
+    "kind",
+    "name",
+    "version"
+  ],
+  "properties": {
+    "catalogs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ComponentOrReference_for_Catalog"
+      }
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ComponentOrReference_for_Dataset"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "embeddings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ComponentOrReference_for_Embeddings"
+      }
+    },
+    "evals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ComponentOrReference_for_Eval"
+      }
+    },
+    "extensions": {
+      "description": "Optional extensions configuration",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/Extension"
+      }
+    },
+    "kind": {
+      "description": "The kind of Spicepod",
+      "allOf": [
+        {
+          "$ref": "#/definitions/SpicepodKind"
+        }
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ComponentOrReference_for_Model"
+      }
+    },
+    "name": {
+      "description": "The name of the Spicepod",
+      "type": "string"
+    },
+    "runtime": {
+      "description": "Optional runtime configuration",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Runtime"
+        }
+      ]
+    },
+    "secrets": {
+      "description": "Optional spicepod secrets configuration Default value is: ```yaml secrets: - from: env name: env ```",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Secret"
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ComponentOrReference_for_Tool"
+      }
+    },
+    "version": {
+      "description": "The version of the Spicepod",
+      "allOf": [
+        {
+          "$ref": "#/definitions/SpicepodVersion"
+        }
+      ]
+    },
+    "views": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ComponentOrReference_for_View"
+      }
+    }
+  },
+  "definitions": {
+    "Acceleration": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "engine": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "indexes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/IndexType"
+          }
+        },
+        "mode": {
+          "default": "memory",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Mode2"
+            }
+          ]
+        },
+        "on_conflict": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/OnConflictBehavior"
+          }
+        },
+        "on_zero_results": {
+          "default": "return_empty",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ZeroResultsAction"
+            }
+          ]
+        },
+        "params": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Params"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "primary_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ready_state": {
+          "default": null,
+          "deprecated": true,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ReadyState"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refresh_append_overlap": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "refresh_check_interval": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "refresh_data_window": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "refresh_jitter_enabled": {
+          "default": false,
+          "type": "boolean"
+        },
+        "refresh_jitter_max": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "refresh_mode": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/RefreshMode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refresh_retry_enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "refresh_retry_max_attempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "refresh_sql": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retention_check_enabled": {
+          "type": "boolean"
+        },
+        "retention_check_interval": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retention_period": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ApiKey": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "ReadOnly"
+          ],
+          "properties": {
+            "ReadOnly": {
+              "type": "object",
+              "required": [
+                "key"
+              ],
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "ReadWrite"
+          ],
+          "properties": {
+            "ReadWrite": {
+              "type": "object",
+              "required": [
+                "key"
+              ],
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ApiKeyAuth": {
+      "type": "object",
+      "required": [
+        "keys"
+      ],
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiKey"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Auth": {
+      "type": "object",
+      "properties": {
+        "api_key": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApiKeyAuth"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Catalog": {
+      "type": "object",
+      "required": [
+        "from",
+        "name"
+      ],
+      "properties": {
+        "dataset_params": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Params"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "from": {
+          "type": "string"
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "params": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Params"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Column": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "description": {
+          "description": "Optional semantic details about the column",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "embeddings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ColumnLevelEmbeddingConfig"
+          }
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ColumnEmbeddingConfig": {
+      "description": "Configuration for if and how a dataset's column should be embedded.\n\nPrefer to use [`super::dataset::column::ColumnLevelEmbeddingConfig`] going forward. Support for [`ColumnEmbeddingConfig`] will be removed in future.",
+      "type": "object",
+      "required": [
+        "column"
+      ],
+      "properties": {
+        "chunking": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EmbeddingChunkConfig"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "column": {
+          "type": "string"
+        },
+        "column_pk": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "use": {
+          "default": "",
+          "type": "string"
+        }
+      }
+    },
+    "ColumnLevelEmbeddingConfig": {
+      "description": "Configuration for if and how a dataset's column should be embedded. Different to [`crate::component::embeddings::ColumnEmbeddingConfig`], as [`ColumnLevelEmbeddingConfig`] should be a property of [`Column`], not [`super::Dataset`].\n\n[`crate::component::embeddings::ColumnEmbeddingConfig`] will be deprecated long term in favour of [`ColumnLevelEmbeddingConfig`].",
+      "type": "object",
+      "properties": {
+        "chunking": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EmbeddingChunkConfig"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "from": {
+          "default": "",
+          "type": "string"
+        },
+        "row_id": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ComponentOrReference_for_Catalog": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Catalog"
+        },
+        {
+          "$ref": "#/definitions/ComponentReference"
+        }
+      ]
+    },
+    "ComponentOrReference_for_Dataset": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Dataset"
+        },
+        {
+          "$ref": "#/definitions/ComponentReference"
+        }
+      ]
+    },
+    "ComponentOrReference_for_Embeddings": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Embeddings"
+        },
+        {
+          "$ref": "#/definitions/ComponentReference"
+        }
+      ]
+    },
+    "ComponentOrReference_for_Eval": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Eval"
+        },
+        {
+          "$ref": "#/definitions/ComponentReference"
+        }
+      ]
+    },
+    "ComponentOrReference_for_Model": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Model"
+        },
+        {
+          "$ref": "#/definitions/ComponentReference"
+        }
+      ]
+    },
+    "ComponentOrReference_for_Tool": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Tool"
+        },
+        {
+          "$ref": "#/definitions/ComponentReference"
+        }
+      ]
+    },
+    "ComponentOrReference_for_View": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/View"
+        },
+        {
+          "$ref": "#/definitions/ComponentReference"
+        }
+      ]
+    },
+    "ComponentReference": {
+      "type": "object",
+      "required": [
+        "ref"
+      ],
+      "properties": {
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ref": {
+          "type": "string"
+        }
+      }
+    },
+    "CorsConfig": {
+      "type": "object",
+      "properties": {
+        "allowed_origins": {
+          "default": [
+            "*"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "enabled": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Dataset": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "acceleration": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Acceleration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Column"
+          }
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "embeddings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ColumnEmbeddingConfig"
+          }
+        },
+        "from": {
+          "type": "string"
+        },
+        "has_metadata_table": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "invalid_type_action": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/InvalidTypeAction"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "mode": {
+          "$ref": "#/definitions/Mode"
+        },
+        "name": {
+          "type": "string"
+        },
+        "params": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Params"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ready_state": {
+          "$ref": "#/definitions/ReadyState"
+        },
+        "replication": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Replication"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "time_column": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "time_format": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeFormat"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "EmbeddingChunkConfig": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "type": "boolean"
+        },
+        "overlap_size": {
+          "default": 0,
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "target_chunk_size": {
+          "default": 0,
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "trim_whitespace": {
+          "default": false,
+          "type": "boolean"
+        }
+      }
+    },
+    "Embeddings": {
+      "type": "object",
+      "required": [
+        "from",
+        "name"
+      ],
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModelFile"
+          }
+        },
+        "from": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Eval": {
+      "type": "object",
+      "required": [
+        "dataset",
+        "name",
+        "scorers"
+      ],
+      "properties": {
+        "dataset": {
+          "type": "string"
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "scorers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Extension": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "IndexType": {
+      "type": "string",
+      "enum": [
+        "enabled",
+        "unique"
+      ]
+    },
+    "InvalidTypeAction": {
+      "type": "string",
+      "enum": [
+        "error",
+        "warn",
+        "ignore"
+      ]
+    },
+    "Mode": {
+      "type": "string",
+      "enum": [
+        "read",
+        "read_write"
+      ]
+    },
+    "Mode2": {
+      "type": "string",
+      "enum": [
+        "memory",
+        "file"
+      ]
+    },
+    "Model": {
+      "type": "object",
+      "required": [
+        "from",
+        "name"
+      ],
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModelFile"
+          }
+        },
+        "from": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "ModelFile": {
+      "type": "object",
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "params": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "path": {
+          "type": "string"
+        },
+        "type": {
+          "description": "Should use [`Self::file_type`] to access.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ModelFileType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "ModelFileType": {
+      "type": "string",
+      "enum": [
+        "weights",
+        "config",
+        "tokenizer",
+        "tokenizerConfig"
+      ]
+    },
+    "OnConflictBehavior": {
+      "type": "string",
+      "enum": [
+        "drop",
+        "upsert"
+      ]
+    },
+    "ParamValue": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer",
+          "format": "int64"
+        },
+        {
+          "type": "number",
+          "format": "double"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
+    },
+    "Params": {
+      "type": "object"
+    },
+    "ReadyState": {
+      "description": "Controls when the dataset is marked ready for queries.",
+      "oneOf": [
+        {
+          "description": "The table is ready once the initial load completes.",
+          "type": "string",
+          "enum": [
+            "on_load"
+          ]
+        },
+        {
+          "description": "The table is ready immediately on registration, with fallback to federated table for queries until the initial load completes.",
+          "type": "string",
+          "enum": [
+            "on_registration"
+          ]
+        }
+      ]
+    },
+    "RefreshMode": {
+      "type": "string",
+      "enum": [
+        "full",
+        "append",
+        "changes"
+      ]
+    },
+    "Replication": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "type": "boolean"
+        }
+      }
+    },
+    "ResultsCache": {
+      "type": "object",
+      "properties": {
+        "cache_max_size": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "eviction_policy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "item_ttl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Runtime": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Auth"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cors": {
+          "$ref": "#/definitions/CorsConfig"
+        },
+        "dataset_load_parallelism": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "results_cache": {
+          "$ref": "#/definitions/ResultsCache"
+        },
+        "task_history": {
+          "$ref": "#/definitions/TaskHistory"
+        },
+        "telemetry": {
+          "$ref": "#/definitions/TelemetryConfig"
+        },
+        "tls": {
+          "description": "If set, the runtime will configure all endpoints to use TLS",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TlsConfig"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tracing": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TracingConfig"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Secret": {
+      "description": "The secrets configuration for a Spicepod.\n\nExample: ```yaml secrets: - from: env name: env - from: kubernetes:my_secret_name name: k8s ```",
+      "type": "object",
+      "required": [
+        "from",
+        "name"
+      ],
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "from": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "params": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Params"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "SpicepodKind": {
+      "type": "string",
+      "enum": [
+        "Spicepod"
+      ]
+    },
+    "SpicepodVersion": {
+      "type": "string",
+      "enum": [
+        "v1beta1",
+        "v1"
+      ]
+    },
+    "TaskHistory": {
+      "type": "object",
+      "properties": {
+        "captured_output": {
+          "default": "none",
+          "type": "string"
+        },
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "retention_check_interval": {
+          "default": "15m",
+          "type": "string"
+        },
+        "retention_period": {
+          "default": "8h",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TelemetryConfig": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "properties": {
+          "default": {},
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "user_agent_collection": {
+          "default": "full",
+          "allOf": [
+            {
+              "$ref": "#/definitions/UserAgentCollection"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "TimeFormat": {
+      "type": "string",
+      "enum": [
+        "timestamp",
+        "timestamptz",
+        "unix_seconds",
+        "unix_millis",
+        "ISO8601"
+      ]
+    },
+    "TlsConfig": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "certificate": {
+          "description": "A PEM encoded certificate",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "certificate_file": {
+          "description": "A filesystem path to a file containing the PEM encoded certificate",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "enabled": {
+          "description": "If set, the runtime will configure all endpoints to use TLS",
+          "type": "boolean"
+        },
+        "key": {
+          "description": "A PEM encoded private key",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "key_file": {
+          "description": "A filesystem path to a file containing the PEM encoded private key",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Tool": {
+      "type": "object",
+      "required": [
+        "from",
+        "name"
+      ],
+      "properties": {
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "from": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "TracingConfig": {
+      "type": "object",
+      "required": [
+        "zipkin_enabled"
+      ],
+      "properties": {
+        "zipkin_enabled": {
+          "type": "boolean"
+        },
+        "zipkin_endpoint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "UserAgentCollection": {
+      "type": "string",
+      "enum": [
+        "full",
+        "disabled"
+      ]
+    },
+    "View": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "sql": {
+          "description": "Inline SQL that describes a view.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sql_ref": {
+          "description": "Reference to a SQL file that describes a view.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ZeroResultsAction": {
+      "description": "Behavior when a query on an accelerated table returns zero results.",
+      "oneOf": [
+        {
+          "description": "Return an empty result set. This is the default.",
+          "type": "string",
+          "enum": [
+            "return_empty"
+          ]
+        },
+        {
+          "description": "Fallback to querying the source table.",
+          "type": "string",
+          "enum": [
+            "use_source"
+          ]
+        }
+      ]
+    }
+  }
+}
